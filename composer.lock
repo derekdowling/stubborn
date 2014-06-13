@@ -1,0 +1,314 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "b360b6b24f07d788553ff37ce02e5e27",
+    "packages": [
+        {
+            "name": "evenement/evenement",
+            "version": "1.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/igorw/evenement.git",
+                "reference": "8b0918f8374327dfed4408fe467980ab41d556dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/igorw/evenement/zipball/8b0918f8374327dfed4408fe467980ab41d556dd",
+                "reference": "8b0918f8374327dfed4408fe467980ab41d556dd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Evenement": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Igor Wiedler",
+                    "email": "igor@wiedler.ch",
+                    "homepage": "http://wiedler.ch/igor/"
+                }
+            ],
+            "description": "Événement is a very simple event dispatching library for PHP 5.3",
+            "keywords": [
+                "event-dispatcher"
+            ],
+            "time": "2012-12-29 17:04:52"
+        },
+        {
+            "name": "jacobstr/dumpling",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jacobstr/dumpling.git",
+                "reference": "b66da47438277f641cd570eb8e2079df0c07f2bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jacobstr/dumpling/zipball/b66da47438277f641cd570eb8e2079df0c07f2bb",
+                "reference": "b66da47438277f641cd570eb8e2079df0c07f2bb",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dumpling\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "jacobstr",
+                    "email": "jacobstr@gmail.com"
+                }
+            ],
+            "description": "Like print_r, but depth limited and cyclic reference safe.",
+            "time": "2014-05-10 03:22:52"
+        },
+        {
+            "name": "jacobstr/esperance",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jacobstr/esperance.git",
+                "reference": "a8b60ca89db826e64e32d1db7eb6a1997dd385a2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jacobstr/esperance/zipball/a8b60ca89db826e64e32d1db7eb6a1997dd385a2",
+                "reference": "a8b60ca89db826e64e32d1db7eb6a1997dd385a2",
+                "shasum": ""
+            },
+            "require": {
+                "evenement/evenement": "1.*",
+                "jacobstr/dumpling": "dev-master",
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Esperance": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "BDD style assertion library for PHP.",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "assertion"
+            ],
+            "time": "2014-05-25 19:18:59"
+        },
+        {
+            "name": "jacobstr/matura",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jacobstr/matura.git",
+                "reference": "33a6d9a792f8395e26134de02b9cff546926a220"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jacobstr/matura/zipball/33a6d9a792f8395e26134de02b9cff546926a220",
+                "reference": "33a6d9a792f8395e26134de02b9cff546926a220",
+                "shasum": ""
+            },
+            "require": {
+                "jacobstr/dumpling": "dev-master",
+                "jacobstr/esperance": "dev-master",
+                "mockery/mockery": "dev-master",
+                "symfony/console": "dev-master"
+            },
+            "bin": [
+                "bin/mat"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Matura\\": "lib",
+                    "Matura\\Test\\": "test"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "jacobstr",
+                    "email": "jacobstr@gmail.com"
+                }
+            ],
+            "description": "A mocha/rspec inspired testing framework for php.",
+            "support": {
+                "source": "https://github.com/jacobstr/matura/tree/master",
+                "issues": "https://github.com/jacobstr/matura/issues"
+            },
+            "time": "2014-06-09 16:54:07"
+        },
+        {
+            "name": "mockery/mockery",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/padraic/mockery.git",
+                "reference": "096a36f21e7ff0768a8a42d524964f3896acd1c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/096a36f21e7ff0768a8a42d524964f3896acd1c6",
+                "reference": "096a36f21e7ff0768a8a42d524964f3896acd1c6",
+                "shasum": ""
+            },
+            "require": {
+                "lib-pcre": ">=7.0",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "hamcrest/hamcrest-php": "~1.1",
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "~0.7@dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.9.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Mockery": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Pádraic Brady",
+                    "email": "padraic.brady@gmail.com",
+                    "homepage": "http://blog.astrumfutura.com"
+                },
+                {
+                    "name": "Dave Marshall",
+                    "email": "dave.marshall@atstsolutions.co.uk",
+                    "homepage": "http://davedevelopment.co.uk"
+                }
+            ],
+            "description": "Mockery is a simple yet flexible PHP mock object framework for use in unit testing with PHPUnit, PHPSpec or any other testing framework. Its core goal is to offer a test double framework with a succint API capable of clearly defining all possible object operations and interactions using a human readable Domain Specific Language (DSL). Designed as a drop in alternative to PHPUnit's phpunit-mock-objects library, Mockery is easy to integrate with PHPUnit and can operate alongside phpunit-mock-objects without the World ending.",
+            "homepage": "http://github.com/padraic/mockery",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "library",
+                "mock",
+                "mock objects",
+                "mockery",
+                "stub",
+                "test",
+                "test double",
+                "testing"
+            ],
+            "time": "2014-06-10 19:25:07"
+        },
+        {
+            "name": "symfony/console",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/Console",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Console.git",
+                "reference": "f41913cde27de7073e78d9a41c1299c0315dfe64"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/f41913cde27de7073e78d9a41c1299c0315dfe64",
+                "reference": "f41913cde27de7073e78d9a41c1299c0315dfe64",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "psr/log": "~1.0",
+                "symfony/event-dispatcher": "~2.1",
+                "symfony/process": "~2.1"
+            },
+            "suggest": {
+                "psr/log": "For using the console logger",
+                "symfony/event-dispatcher": "",
+                "symfony/process": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Console\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Console Component",
+            "homepage": "http://symfony.com",
+            "time": "2014-06-11 06:54:52"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "jacobstr/matura": 20
+    },
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}
