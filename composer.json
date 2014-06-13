@@ -1,4 +1,14 @@
 {
+    "name": "derekdowling/stubborn",
+    "description": "Configurable call handler that is persistent against failures.",
+    "license": "Apache-2.0",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "derekdowling",
+            "email": "me@derekdowling.com"
+        }
+    ],
     "repositories": [
         {
             "type": "vcs",
