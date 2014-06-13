@@ -1,10 +1,6 @@
-========
-Stubborn
-========
+## Stubborn
 
-===
-Configurable call handler that is persistent against failures.
-===
+###### Configurable call handler that is persistent against failures.
 
 Frustrated by unreliable API's that seem to fail randomly? Use Stubborn to make
 sure you aren't left unprotected in code where you are most vulnerable.
@@ -18,6 +14,7 @@ external API calls:
 
 All driven via a slick Result Evaluation System:
 
+'''php
 $result = Stubborn::build()
     // Use the Stubborn Result Handler to drive your call retries
     ->resultHandler(
@@ -43,4 +40,4 @@ $result = Stubborn::build()
     ->run(function() use ($id) {
         return Awesome_API::add_subscriber($id); 
     });
-
+'''
