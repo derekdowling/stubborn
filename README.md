@@ -14,7 +14,7 @@ external API calls:
 
 All driven via a slick Result Evaluation System:
 
-'''php
+```php
 
 $result = Stubborn::build()
     // Use the Stubborn Result Handler to drive your call retries
@@ -41,5 +41,4 @@ $result = Stubborn::build()
     ->run(function() use ($id) {
         return Awesome_API::add_subscriber($id); 
     });
-    
-'''
+```
