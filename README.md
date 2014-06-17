@@ -12,9 +12,10 @@ Stubborn provides all the necessary tooling you need to handle a variety of exte
 -Exception Catching
 -Backoff Handling
 
-Basic example:
+###### Example:
 
 ```php
+$id = $_RESULT['user_id'];
 
 $result = Stubborn::build()
     // Use the Stubborn Result Handler to drive your call retries
