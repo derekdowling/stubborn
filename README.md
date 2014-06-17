@@ -2,17 +2,17 @@
 
 ###### Configurable call handler that is persistent against failures.
 
-Frustrated by unreliable API's that seem to fail randomly? Use Stubborn to make
-sure you aren't left unprotected in code where you are most vulnerable.
+Frustrated by unreliable API's that seem to fail randomly?
+Use Stubborn to ensure you aren't left unprotected in the most vulnerable and unknown spots in your code.
 
-Stubborn provides all the necessary tooling you need to handle a variety of
-external API calls:
+Stubborn provides all the necessary tooling you need to handle a variety of external API calls:
 
+-Result Handling
 -Retry Handling(immediate/delayed)
 -Exception Catching
--Backoff Handlers
+-Backoff Handling
 
-All driven via a slick Result Evaluation System:
+Basic example:
 
 ```php
 
