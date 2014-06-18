@@ -18,5 +18,10 @@
     "minimum-stability": "dev",
     "require": {
         "jacobstr/matura": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Stubborn\\": "lib/"
+        }
     }
 }
