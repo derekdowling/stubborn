@@ -1,4 +1,6 @@
-<?php namespace Stubborn\Test\Stubborn;
+<?php namespace Stubborn\Tests;
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Stubborn\Stubborn;
 use Stubborn\Exceptions\StubbornException;

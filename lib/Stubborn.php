@@ -1,6 +1,6 @@
 <?php namespace Stubborn;
 
-require 'vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Belt\Trace;
 
