@@ -21,7 +21,7 @@
     "autoload": {
         "psr-4": {
             "Stubborn\\": "lib/",
-            "Stubborn\\Tests": "tests/"
+            "Stubborn\\Tests\\": "tests/"
         }
     }
 }
