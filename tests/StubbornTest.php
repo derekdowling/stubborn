@@ -135,4 +135,21 @@ describe('Stubborn', function ($test) {
             expect($result)->to->be('Boosh');
         });
     });
+    describe('->getRunTime()', function ($test) {
+        it('should return an integer time in millis', function ($test) {
+            $stubborn = new Stubborn();
+            $stubborn
+                ->resultHandler(function ($stubborn) {
+                    $stubborn->retry();
+                })
+                ->retries(2)
+                ->run(function () {
+                    sleep(1);
+                });
+
+            // kind of arbitrary, can't think of a more accurate way to test
+            // this at this point
+            expect($stubborn->getRunTime())->to->be(3);
+        });
+    });
 });

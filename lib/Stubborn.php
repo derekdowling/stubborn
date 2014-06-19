@@ -32,6 +32,7 @@ class Stubborn
     protected $short_circuit;
     protected $run_attempt;
     protected $is_dirty;
+    protected $run_time;
 
     /**
      *  Creates a Stubborn object with some default parameters for plug and 
@@ -45,9 +46,8 @@ class Stubborn
         $this->short_circuit = false;
         $this->max_tries = 1;
 
-        // Resetable run state
-        $this->is_dirty = false;
-        $this->run_attempt = 0;
+        // Set run state
+        $this->reset();
     }
 
     /**
@@ -70,6 +70,7 @@ class Stubborn
     {
         $this->is_dirty = false;
         $this->run_attempt = 0;
+        $this->run_time = 0;
     }
 
     public function getRetryCount()
@@ -265,6 +266,14 @@ class Stubborn
     }
 
     /**
+     *  Gets total elapsed time that executing the specific function took.
+     */
+    public function getRunTime()
+    {
+        return $this->run_time;
+    }
+
+    /**
      * Accepts a variable number of callback functions which will be invoked and 
      * handled based on parameters defined for the Stubborn object.
      *
@@ -300,7 +309,11 @@ class Stubborn
                 // If the call doesn't result in a thrown exception, success!
                 try {
                     
+                    $start_ts = time();
                     $result = call_user_func($function);
+                    $end_ts = time();
+
+                    $this->run_time += $end_ts - $start_ts;
                     $this->evaluateResult($result);
                    
                 } catch (BackoffEvent $e) {
