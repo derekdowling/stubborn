@@ -1,5 +1,7 @@
 <?php namespace Stubborn;
 
+require 'vendor/autoload.php';
+
 use Belt\Trace;
 
 use Stubborn\Exceptions\StubbornException;

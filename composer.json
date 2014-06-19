@@ -15,7 +15,6 @@
             "url": "https://github.com/jacobstr/matura.git"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "jacobstr/matura": "dev-master"
     },
