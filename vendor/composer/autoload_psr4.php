@@ -11,4 +11,5 @@ return array(
     'Matura\\Test\\' => array($vendorDir . '/jacobstr/matura/test'),
     'Matura\\' => array($vendorDir . '/jacobstr/matura/lib'),
     'Dumpling\\' => array($vendorDir . '/jacobstr/dumpling/src'),
+    'Belt\\' => array($vendorDir . '/mover-io/belt/lib'),
 );

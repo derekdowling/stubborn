@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "jacobstr/matura": "dev-master"
+        "mover-io/belt": "dev-master"
     },
     "autoload": {
         "psr-4": {

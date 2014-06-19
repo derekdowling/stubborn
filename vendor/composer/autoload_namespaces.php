@@ -6,8 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
+    'PHPUsable\\' => array($vendorDir . '/mover-io/phpusable-phpunit/src'),
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
     'Evenement' => array($vendorDir . '/evenement/evenement/src'),
-    'Esperance' => array($vendorDir . '/jacobstr/esperance/src'),
+    'Esperance' => array($vendorDir . '/jacobstr/esperance/src', $vendorDir . '/esperance/esperance/src'),
 );
