@@ -16,10 +16,13 @@ class StubbornEventHandler
     protected $retry_count;
     protected $max_retries;
     protected $run_time;
+    protected $last_backoff;
     protected $is_exception;
 
-    public function __construct($retry_count, $max_retries, $run_time, $result, $is_exception = false)
+    public function __construct($retry_count, $max_retries, $run_time, $last_backoff, $result)
     {
+        $is_exception = $result instanceof \Exception ? true : false;
+
         $this->retry_count = $retry_count;
         $this->max_retries = $max_retries;
         $this->run_time = $run_time;
@@ -52,6 +55,33 @@ class StubbornEventHandler
         return $this->result;
     }
 
+    public function lastBackoff()
+    {
+        return $this->last_backoff;
+    }
+    
+    /*
+     *  Allows the user to perform a static backoff
+     *  that remains the same length for every attempt.
+     *
+     *  @param int $duration time in seconds
+     */
+    public function staticBackoff($duration)
+    {
+        $this->backoff($duration);
+    }
+
+    /**
+     * Allows the user to perform an exponential backoff between
+     * attempts in which the backoff duration grows exponentially
+     * after each call.
+     */
+    public function exponentialBackoff()
+    {
+        $duration = pow(2, $this->run_attempt) + rand(0, 1000) / 1000;
+        $this->backoff($duration);
+    }
+
     /***********
      *
      * Stubborn Driver Events
@@ -72,7 +102,7 @@ class StubbornEventHandler
 
     public function delayRetry()
     {
-        throw new DelayRetryEvent;
+        $this->exponentialBackoff();
     }
 
     public function accept()
@@ -80,8 +110,8 @@ class StubbornEventHandler
         throw new StopEvent;
     }
 
-    public function backoff()
+    private function backoff($duration)
     {
-        throw new BackoffEvent;
+        throw new BackoffEvent($duration);
     }
 }
