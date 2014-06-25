@@ -11,7 +11,7 @@ use Stubborn\DefaultBackoffHandler;
 describe('Stubborn', function ($test) {
     before_all(function ($test) {
         $test->retry_result_handler =
-                function ($stubborn, $response, $run_attempt, $max_tries) {
+                function ($stubborn) {
                     $stubborn->retry();
                 };
     });
@@ -87,7 +87,7 @@ describe('Stubborn', function ($test) {
     describe('->resultHandler()', function ($test) {
         it('should control the result outcome', function ($test) {
             expect(function () {
-                $rHandler = function ($stubborn, $response, $run_attempt, $max_tries) {
+                $rHandler = function ($stubborn) {
                     throw new \Exception('Result Handler called');
                 };
                 Stubborn::build()
@@ -117,8 +117,8 @@ describe('Stubborn', function ($test) {
     describe('->handleBackoff()', function ($test) {
         it('should backoff as specified', function ($test) {
             $bHandler = new DefaultBackoffHandler(2);
-            $rHandler = function ($stubborn, $response, $run_attempt, $max_tries) {
-                if ($run_attempt < $max_tries) {
+            $rHandler = function ($stubborn) {
+                if ($stubborn->retryCount() < $stubborn->maxRetries()) {
                     $stubborn->backoff();
                 }
             };

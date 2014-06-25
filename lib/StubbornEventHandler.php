@@ -10,26 +10,26 @@ use Stubborn\Events\BackoffEvent;
  *  StubbornResponseHandler functions. This allows you to fire events that help 
  *  drive Stubborn forward.
  */
-class ResultHandlerHelper
+class StubbornEventHandler
 {
     protected $result;
-    protected $run_attempt;
+    protected $retry_count;
     protected $max_retries;
     protected $run_time;
     protected $is_exception;
 
-    public function __construct($run_attempt, $max_retries, $run_time, $result, $is_exception = false)
+    public function __construct($retry_count, $max_retries, $run_time, $result, $is_exception = false)
     {
-        $this->run_attempt = $run_attempt;
+        $this->retry_count = $retry_count;
         $this->max_retries = $max_retries;
         $this->run_time = $run_time;
         $this->result = $is_exception ? null : $result;
         $this->exception = $is_exception ? $result : null;
     }
 
-    public function currentAttempt()
+    public function retryCount()
     {
-        return $this->run_attempt;
+        return $this->retry_count;
     }
 
     public function maxRetries()
