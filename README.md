@@ -34,7 +34,7 @@ $result = Stubborn::build()
                 // trying again
                 $stubborn->delayRetry();
             } elseif ($result == 'Hard_Failure') {
-                $stubborn->fail();
+                $stubborn->stop();
             }
             $stubborn->retry();
         }
