@@ -128,24 +128,21 @@ class Stubborn
     {
         return $this->last_backoff ?: null;
     }
-   
-    /******************************
-     *  Stubborn setup functions
-     * ***************************/
-
+  
     /**
-     *  Use this to set how many times after the first attempt Stubborn should 
+     *  Returns the number of retries that have currently been attempted or 
+     *  set how many times after the first attempt Stubborn should 
      *  try to execute the provided function.
      *
      *  @param int $retries number of additional reries to perform before quiting
      *
      *  @return itself for chaining or the current retry count
      */
-    public function retries($retries)
+    public function retries($retries = null)
     {
         if (!$retries) {
 
-            return $this->retries();
+            return $this->retry_count;
 
         } elseif (!is_int($retries)) {
             throw new StubbornException('Parameter should be an integer');
@@ -156,6 +153,10 @@ class Stubborn
         $this->max_retries = $retries;
         return $this;
     }
+ 
+    /******************************
+     *  Stubborn setup functions
+     * ***************************/
 
     /**
      *  Use this function to set exceptions we want to be stubborn against.
@@ -249,10 +250,9 @@ class Stubborn
     private function handleException()
     {
         if (isset($this->exception_handler)) {
-            $event_handler = $this->generateEventHandler();
             call_user_func(
                 $this->exception_handler,
-                $event_handler
+                new StubbornEventHandler($this)
             );
         }
     }
@@ -269,7 +269,7 @@ class Stubborn
         if (isset($this->result_handler)) {
             call_user_func(
                 $this->result_handler,
-                $this
+                new StubbornEventHandler($this)
             );
         }
 
@@ -289,10 +289,10 @@ class Stubborn
      *
      *  @return bool whether to throw the exception or suppress it
      */
-    private function suppressException(\Exception $e)
+    private function suppressException()
     {
         foreach ((array) $this->catchable_exceptions as $type) {
-            if (is_a($e, $type)) {
+            if (is_a($this->current_exception, $type)) {
                 return true;
             }
         }
@@ -317,6 +317,7 @@ class Stubborn
         for ($this->retry_count = 0; $this->retry_count <= $this->max_retries; $this->retry_count++) {
 
             $this->current_result = null;
+            $this->current_exceptions = null;
             $this->run_time = 0;
             $this->last_backoff = 0;
 
@@ -344,25 +345,21 @@ class Stubborn
                         throw $e;
                     }
 
+                    // store this as a current result in case the user decides
+                    // to handle and retry via evaluateResult
+                    $this->current_exception = $e;
+
                     // Since a non-expected exception was thrown,
                     // stop the run time now
                     $this->run_time = time() - $this->start_time;
 
-                    // check if this is an exception we want to suppress
-                    // and re-run Stubborn because of
-                    $suppress = $this->suppressException($e);
-
                     // if we've exceeded retries, want an exception to be
                     // intentionally thrown, or short circuit is set, let it rip
-                    if (!$this->retry_count == $this->max_retries
-                        || $suppress
+                    if ($this->retry_count == $this->max_retries
+                        || !$this->suppressException()
                         || $this->short_circuit
                     ) {
-                        
-                        // store this as a current result in case the user decides
-                        // to handle and retry via evaluateResult
-                        $this->current_result = $e;
-
+                      
                         // allow result handler to do something special with
                         // the exception and throw a Stubborn Event
                         $this->handleException();
@@ -370,7 +367,7 @@ class Stubborn
                         // if this exception hasn't been handled by this
                         // point, it is clearly something unanticipated and
                         // should be thrown out of Stubborn
-                        throw $this->current_result;
+                        throw $this->current_exception;
                     }
                 }
             } catch (BackoffEvent $e) {

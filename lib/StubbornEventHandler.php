@@ -15,8 +15,24 @@ use Stubborn\Events\BackoffEvent;
  *  Stubborn being in a currently running state and any events they fire will 
  *  be caught and handled appropriately.
  */
-class StubbornEventHandler extends Stubborn
+class StubbornEventHandler
 {
+
+    protected $stubborn_runner;
+
+    public function __construct($stubborn)
+    {
+        $this->stubborn_runner = $stubborn;
+    }
+
+    public function __call($function, $args)
+    {
+        if (method_exists($this->stubborn_runner, $function)) {
+            return call_user_func_array(array($this->stubborn_runner, $function), $args);
+        }
+
+        throw new StubbornException("Function '$function' not defined");
+    }
 
     /*
      *  Allows the user to perform a static backoff
@@ -36,7 +52,7 @@ class StubbornEventHandler extends Stubborn
      */
     public function exponentialBackoff()
     {
-        $duration = pow(2, $this->retry_count) + rand(0, 1000) / 1000;
+        $duration = pow(2, $this->stubborn_runner->retries()) + rand(0, 1000) / 1000;
         $this->backoff($duration);
     }
 

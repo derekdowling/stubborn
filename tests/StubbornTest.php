@@ -13,13 +13,6 @@ class StubbornTestException extends \Exception
 }
 
 describe('Stubborn', function ($test) {
-    before_all(function ($test) {
-        $test->retry_result_handler =
-                function ($stubborn) {
-                    $stubborn->retry();
-                };
-    });
-
     describe('->run()', function ($test) {
         it('should execute and return the expected value for the provided function', function ($test) {
             $stubborn = new Stubborn();
@@ -108,7 +101,9 @@ describe('Stubborn', function ($test) {
             $stubborn = new Stubborn();
             $result = $stubborn
                 ->retries(3)
-                ->resultHandler($test->retry_result_handler)
+                ->resultHandler(function ($stubborn) {
+                    $stubborn->retry();
+                })
                 ->run(function () {
                     return 'Dog';
                 });
@@ -129,14 +124,14 @@ describe('Stubborn', function ($test) {
                 ->run(function () {
                     return array(1,6,9);
                 });
-            expect($stubborn->getTotalTries())->to->be(6);
+            expect($stubborn->totalTries())->to->be(6);
             expect($result)->to->be(array(1,6,9));
         });
         it('->stop()', function ($test) {
             $stubborn = new Stubborn();
             $result = $stubborn
                 ->resultHandler(function ($stubborn) {
-                    if ($stubborn->retryCount() == 1) {
+                    if ($stubborn->retries() == 1) {
                         $stubborn->stop();
                     }
                     $stubborn->retry();
@@ -145,7 +140,7 @@ describe('Stubborn', function ($test) {
                 ->run(function () {
                     return 5;
                 });
-            expect($stubborn->getTotalTries())->to->be(2);
+            expect($stubborn->totalTries())->to->be(2);
             expect($result)->to->be(5);
         });
 
@@ -153,7 +148,7 @@ describe('Stubborn', function ($test) {
             $stubborn = new Stubborn();
             $result = $stubborn
                 ->resultHandler(function ($stubborn) {
-                    if ($stubborn->retryCount() < $stubborn->maxRetries()) {
+                    if ($stubborn->retries() < $stubborn->maxRetries()) {
                         $stubborn->staticBackoff(1);
                     }
                 })
@@ -164,8 +159,8 @@ describe('Stubborn', function ($test) {
 
             // kind of arbitrary, can't think of a more accurate way to test
             // this at this point
-            expect($stubborn->getTotalBackoff())->to->be(2);
-            expect($stubborn->getTotalTries())->to->be(3);
+            expect($stubborn->totalBackoffTime())->to->be(2);
+            expect($stubborn->totalTries())->to->be(3);
             expect($result)->to->be(1);
         });
 
@@ -173,7 +168,7 @@ describe('Stubborn', function ($test) {
             $stubborn = new Stubborn();
             $result = $stubborn
                 ->resultHandler(function ($stubborn) {
-                    if ($stubborn->retryCount() < $stubborn->maxRetries()) {
+                    if ($stubborn->retries() < $stubborn->maxRetries()) {
                         $stubborn->exponentialBackoff();
                     }
                 })
@@ -184,8 +179,8 @@ describe('Stubborn', function ($test) {
 
             // kind of arbitrary, can't think of a more accurate way to test
             // this at this point
-            expect($stubborn->getTotalBackoff())->to->be->within(3, 5);
-            expect($stubborn->getTotalTries())->to->be(3);
+            expect($stubborn->totalBackoffTime())->to->be->within(3, 5);
+            expect($stubborn->totalTries())->to->be(3);
             expect($result)->to->be(77);
         });
 
@@ -199,20 +194,19 @@ describe('Stubborn', function ($test) {
                 ->run(function () {
                     return 'Kaboom';
                 });
-            expect($stubborn->getTotalBackoff())->to->be->within(1, 2);
-            expect($stubborn->getTotalTries())->to->be(2);
+            expect($stubborn->totalBackoffTime())->to->be->within(1, 2);
+            expect($stubborn->totalTries())->to->be(2);
             expect($result)->to->be('Kaboom');
         });
     });
 
     describe('->exceptionHandler()', function ($test) {
         it('should make Stubborn retry 3 times', function ($test) {
-
             $exception = null;
             $e_type = 'Stubborn\Tests\StubbornTestException';
 
             $rHandler = function ($stubborn) use ($e_type) {
-                if ($stubborn->retryCount() < $stubborn->maxRetries()) {
+                if ($stubborn->retries() < $stubborn->maxRetries()) {
                     throw new $e_type;
                 }
             };
@@ -229,7 +223,7 @@ describe('Stubborn', function ($test) {
                     return 'Boosh';
                 });
             expect(is_a($exception, $e_type))->to->be(true);
-            expect($stubborn->getTotalTries())->to->be(4);
+            expect($stubborn->totalTries())->to->be(4);
             expect($result)->to->be('Boosh');
         });
     });
