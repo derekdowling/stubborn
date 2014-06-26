@@ -198,6 +198,27 @@ describe('Stubborn', function ($test) {
             expect($stubborn->totalTries())->to->be(2);
             expect($result)->to->be('Kaboom');
         });
+
+        it('->reset()', function ($test) {
+            $total_retries = -1;
+            $stubborn = new Stubborn();
+            $result = Stubborn::build()
+                ->retries(3)
+                ->resultHandler(function ($stubborn) use (&$total_tries) {
+                    $total_tries++;
+                    \Belt\Trace::debug($stubborn->retries());
+                    if ($stubborn->retries() == 2 && $stubborn->retries() == $total_tries) {
+                        $stubborn->reset();
+                    }
+                    $stubborn->retry();
+                })
+                ->run(function () {
+                    return 3;
+                });
+            expect($total_tries)->to->be(5);
+            expect($stubborn->totalTries())->to->be(3);
+            expect($result)->to->be(3);
+        });
     });
 
     describe('->exceptionHandler()', function ($test) {

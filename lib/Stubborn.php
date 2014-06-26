@@ -316,6 +316,8 @@ class Stubborn
         // start at 0 so to include the first attempt plus retries
         for ($this->retry_count = 0; $this->retry_count <= $this->max_retries; $this->retry_count++) {
 
+            \Belt\Trace::debug($this->retry_count);
+
             $this->current_result = null;
             $this->current_exceptions = null;
             $this->run_time = 0;
@@ -361,7 +363,8 @@ class Stubborn
                     ) {
                       
                         // allow result handler to do something special with
-                        // the exception and throw a Stubborn Event
+                        // the exception and throw a Stubborn Event in order to
+                        // avoid the exception being thrown
                         $this->handleException();
 
                         // if this exception hasn't been handled by this
