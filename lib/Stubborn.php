@@ -13,6 +13,9 @@ use Stubborn\Events\DelayRetryEvent;
  *  robustness and configurability against exceptions and backoff for when 
  *  there is the risk of mission critical infrastructure failing for variable 
  *  or unknown reasoning against blackbox systems.
+ *
+ *  //TODO: v3 needs to better support an array of functions to run, although 
+ *  for now that seems like a bit of an edge case
  */
 class Stubborn
 {
@@ -43,7 +46,6 @@ class Stubborn
         $this->catchable_exceptions = array();
         $this->short_circuit = false;
         $this->max_retries = 0;
-
     }
 
     /**
@@ -296,6 +298,8 @@ class Stubborn
             // start at 0 so to include the first attempt plus retries
             for ($this->retry_count = 0; $this->retry_count <= $this->max_retries; $this->retry_count++) {
 
+                \Belt\Trace::debug($this->retry_count);
+
                 $this->run_time = 0;
                 $this->last_backoff = 0;
 
@@ -368,6 +372,11 @@ class Stubborn
                 }
 
             } // end of retry loop
+
+            // TODO: make loop logic better so as not to need this
+            if ($this->retry_count > $this->max_retries) {
+                $this->retry_count = $this->max_retries;
+            }
 
             $results[] = $this->current_result;
 
