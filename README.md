@@ -2,6 +2,8 @@
 
 ###### Configurable call handler that is persistent against failures.
 
+Built, tested, and relied upon at [Mover.io](https://mover.io).
+
 Frustrated by unreliable API's that seem to fail randomly?
 Use Stubborn to ensure you aren't left unprotected in the most vulnerable and unknown spots in your code.
 
