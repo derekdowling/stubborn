@@ -22,7 +22,9 @@ $id = $_RESULT['user_id'];
 $result = Stubborn::build()
     // Use the Stubborn Result Handler to drive your call retries
     ->resultHandler(
-        function ($stubborn, $result) {
+        function ($stubborn) {
+            $result = $stubborn->result();
+            
             if ($result == 'Success') {
                 $stubborn->accept();
             } elseif ($result == 'Backoff_Needed') {
