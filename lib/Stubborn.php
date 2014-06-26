@@ -31,6 +31,7 @@ class Stubborn
     protected $retry_count;
     protected $max_retries;
     protected $current_result;
+    protected $current_exception;
     protected $start_time;
     protected $run_time;
     protected $total_backoff;
@@ -64,35 +65,68 @@ class Stubborn
      *  Post Run State
      * ***************************/
 
-    /*
-     * Number of times Stubborn retried;
+    /**
+     * @return int number of times retried
      */
-    public function getRetryCount()
+    public function totalRetries()
     {
         return $this->retry_count;
     }
 
-    public function getTotalTries()
+    /**
+     * @return int total attempts tried
+     */
+    public function totalTries()
     {
         return $this->retry_count + 1;
     }
 
-    public function getMaxRetries()
+    /**
+     *  @return int maximum retries allowed
+     */
+    public function maxRetries()
     {
         return $this->max_retries;
     }
     
     /**
-     *  Gets total elapsed time that executing the specific function took.
+     *  @return int time in millis that executing the current run took
      */
-    public function getRunTime()
+    public function runTime()
     {
         return $this->run_time;
     }
 
-    public function getTotalBackoff()
+    /**
+     *  @return float time in seconds backed off for current call
+     */
+    public function totalBackoffTime()
     {
         return $this->total_backoff;
+    }
+
+    /**
+     * @return exception|null the exception that was thrown this current run
+     */
+    public function exception()
+    {
+        return $this->current_exception ?: null;
+    }
+
+    /**
+     *  @return mixed result returned by current run
+     */
+    public function result()
+    {
+        return $this->current_result ?: null;
+    }
+
+    /**
+     * @return float time in seconds that was backed off on last run
+     */
+    public function lastBackoff()
+    {
+        return $this->last_backoff ?: null;
     }
    
     /******************************
@@ -105,11 +139,15 @@ class Stubborn
      *
      *  @param int $retries number of additional reries to perform before quiting
      *
-     *  @return itself for chaining
+     *  @return itself for chaining or the current retry count
      */
     public function retries($retries)
     {
-        if (!is_int($retries)) {
+        if (!$retries) {
+
+            return $this->retries();
+
+        } elseif (!is_int($retries)) {
             throw new StubbornException('Parameter should be an integer');
         }
 
@@ -196,7 +234,7 @@ class Stubborn
     /**
      * Performs a Stubborn Backoff for duration specified.
      */
-    protected function handleBackoff($duration)
+    private function handleBackoff($duration)
     {
         $next_try = $this->retry_count + 1;
         static::logger()->debug("Backoff Used({$duration}s): Retry $next_try of $this->max_retries.");
@@ -208,7 +246,7 @@ class Stubborn
     /*
      *  Deals with the execution of an exception handler if defined.
      */
-    protected function handleException()
+    private function handleException()
     {
         if (isset($this->exception_handler)) {
             $event_handler = $this->generateEventHandler();
@@ -226,23 +264,19 @@ class Stubborn
      *
      * Should not be called manually.
      */
-    protected function handleResult()
+    private function handleResult()
     {
-
-        // need to define outside of if statement so we can access later
-        $event_handler = $this->generateEventHandler();
-
         if (isset($this->result_handler)) {
             call_user_func(
                 $this->result_handler,
-                $event_handler
+                $this
             );
         }
 
         // By default we can only assume that the result was a success if we've
         // made it this far, or if the result handler hasn't thrown
         // a RetryEvent to this point
-        if (!$event_handler->exception() !== null) {
+        if ($this->exception() !== null) {
             throw new StopEvent;
         }
     }
@@ -255,7 +289,7 @@ class Stubborn
      *
      *  @return bool whether to throw the exception or suppress it
      */
-    protected function suppressException(\Exception $e)
+    private function suppressException(\Exception $e)
     {
         foreach ((array) $this->catchable_exceptions as $type) {
             if (is_a($e, $type)) {
@@ -263,23 +297,6 @@ class Stubborn
             }
         }
         return false;
-    }
-
-    /*
-     *  Helper for creating StubbornEventHandlers.
-     *
-     *  Consider looking into an alternative strategy for configuring if 
-     *  parameter list continues to grow.
-     */
-    private function generateEventHandler()
-    {
-        return new StubbornEventHandler(
-            $this->retry_count,
-            $this->max_retries,
-            $this->run_time,
-            $this->last_backoff,
-            $this->current_result
-        );
     }
 
     /**
@@ -291,108 +308,116 @@ class Stubborn
      * @return An array of return values from the test functions. If only one
      *  function is provided, we return it's result instead.
      */
+    private function execute($invokable)
+    {
+        $this->current_invokable = $invokable;
+        $this->total_backoff = 0;
+
+        // start at 0 so to include the first attempt plus retries
+        for ($this->retry_count = 0; $this->retry_count <= $this->max_retries; $this->retry_count++) {
+
+            $this->current_result = null;
+            $this->run_time = 0;
+            $this->last_backoff = 0;
+
+            // outer try/catch handles fired stubborn events
+            try {
+
+                // Protect against any exceptions we expect we might encounter.
+                // If the call doesn't result in a thrown exception, success!
+                try {
+                    
+                    $this->start_time = time();
+                    $this->current_result = call_user_func($this->current_invokable);
+                    $this->run_time = time() - $this->start_time;
+
+                    $this->handleResult();
+                   
+                // Catch everything and re-throw it if we are not intentionally
+                // wanting to harden the function call against it, Stubborn
+                // Events will trickle down
+                } catch (\Exception $e) {
+
+                    // if a Stubborn Event has been throw, don't do any
+                    // handling here
+                    if (is_a($e, 'Stubborn\Events\StubbornEvent')) {
+                        throw $e;
+                    }
+
+                    // Since a non-expected exception was thrown,
+                    // stop the run time now
+                    $this->run_time = time() - $this->start_time;
+
+                    // check if this is an exception we want to suppress
+                    // and re-run Stubborn because of
+                    $suppress = $this->suppressException($e);
+
+                    // if we've exceeded retries, aren't handling this specific
+                    // exception, or want an exception to be intentionally
+                    // thrown, let it rip
+                    if (!$suppress
+                        || $this->short_circuit
+                        || $this->retry_count == $this->max_retries
+                    ) {
+                        
+                        // store this as a current result in case the user decides
+                        // to handle and retry via evaluateResult
+                        $this->current_result = $e;
+
+                        // allow result handler to do something special with
+                        // the exception and throw a Stubborn Event
+                        $this->handleException();
+
+                        // if this exception hasn't been handled by this
+                        // point, it is clearly something unanticipated and
+                        // should be thrown out of Stubborn
+                        throw $this->current_result;
+                    }
+
+                }
+
+            } catch (BackoffEvent $e) {
+                // don't do backoff if we're on our last try
+                if ($this->retry_count < $this->max_retries) {
+                    $this->handleBackoff($e->getMessage());
+                    continue;
+                }
+            } catch (RetryEvent $e) {
+                continue;
+            } catch (StopEvent $e) {
+                break;
+            } catch (ResetEvent $e) {
+                // so that the iterator sets it to be 0
+                $this->retry_count = -1;
+            }
+
+        } // end of retry loop
+
+        // TODO: make loop logic better so as not to need this
+        if ($this->retry_count > $this->max_retries) {
+            $this->retry_count = $this->max_retries;
+        }
+
+        return $this->current_result;
+    }
+
     public function run($invokables)
     {
         //if the user supplies a single function, help our for loop out
         if (is_callable($invokables)) {
-            $invokables = array($invokables);
-        } elseif (!is_array($invokables)) {
+
+            return $this->execute($invokables);
+
+        } elseif (is_array($invokables)) {
+            $results = array();
+            foreach ($invokables as $invokable) {
+                $results[] = $this->execute($invokable);
+            }
+            return $results;
+        } else {
             throw new StubbornException('Uncompatible Stubborn run type requested.');
         }
 
-        $results = array();
-        foreach ($invokables as $function) {
-            $this->running = true;
-            $this->current_result = null;
-            $this->total_backoff = 0;
-
-            // start at 0 so to include the first attempt plus retries
-            for ($this->retry_count = 0; $this->retry_count <= $this->max_retries; $this->retry_count++) {
-
-                $this->run_time = 0;
-                $this->last_backoff = 0;
-
-                // outer try/catch handles fired stubborn events
-                try {
-
-                    // Protect against any exceptions we expect we might encounter.
-                    // If the call doesn't result in a thrown exception, success!
-                    try {
-                        
-                        $this->start_time = time();
-                        $this->current_result = call_user_func($function);
-                        $this->run_time = time() - $this->start_time;
-
-                        $this->handleResult();
-                       
-                    // Catch everything and re-throw it if we are not intentionally
-                    // wanting to harden the function call against it, Stubborn
-                    // Events will trickle down
-                    } catch (\Exception $e) {
-
-                        // if a Stubborn Event has been throw, don't do any
-                        // handling here
-                        if (is_a($e, 'Stubborn\Events\StubbornEvent')) {
-                            throw $e;
-                        }
-
-                        // Since a non-expected exception was thrown,
-                        // stop the run time now
-                        $this->run_time = time() - $this->start_time;
-
-                        // check if this is an exception we want to suppress
-                        // and re-run Stubborn because of
-                        $suppress = $this->suppressException($e);
-
-                        // if we've exceeded retries, aren't handling this specific
-                        // exception, or want an exception to be intentionally
-                        // thrown, let it rip
-                        if (!$suppress
-                            || $this->short_circuit
-                            || $this->retry_count == $this->max_retries
-                        ) {
-                            
-                            // store this as a current result in case the user decides
-                            // to handle and retry via evaluateResult
-                            $this->current_result = $e;
-
-                            // allow result handler to do something special with
-                            // the exception and throw a Stubborn Event
-                            $this->handleException();
-
-                            // if this exception hasn't been handled by this
-                            // point, it is clearly something unanticipated and
-                            // should be thrown out of Stubborn
-                            throw $this->current_result;
-                        }
-
-                    }
-
-                } catch (BackoffEvent $e) {
-                    // don't do backoff if we're on our last try
-                    if ($this->retry_count < $this->max_retries) {
-                        $this->handleBackoff($e->getMessage());
-                        continue;
-                    }
-                }catch (RetryEvent $e) {
-                    continue;
-                } catch (StopEvent $e) {
-                    break;
-                }
-
-            } // end of retry loop
-
-            // TODO: make loop logic better so as not to need this
-            if ($this->retry_count > $this->max_retries) {
-                $this->retry_count = $this->max_retries;
-            }
-
-            $results[] = $this->current_result;
-
-        } // end of invokable iteration
-
-        //if we have just a single result, don't wrap it in an array
-        return count($results) == 1 ? $results[0] : $results;
     }
 
     public static function logger()

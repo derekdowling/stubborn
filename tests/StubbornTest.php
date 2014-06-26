@@ -59,7 +59,7 @@ describe('Stubborn', function ($test) {
         describe('with a matching exception', function ($test) {
             it('should catch/retry 4 times and then throw exception', function ($test) {
                 $stubborn = Stubborn::build();
-                expect(function () use (&$test, &$stubborn) {
+                expect(function () use ($stubborn) {
                     $stubborn
                         ->catchExceptions(array('Stubborn\Tests\StubbornTestException'))
                         ->retries(4)
@@ -67,7 +67,7 @@ describe('Stubborn', function ($test) {
                             throw new StubbornTestException('this should get thrown');
                         });
                 })->to->throw('Stubborn\Tests\StubbornTestException', 'this should get thrown');
-                expect($stubborn->getRetryCount())->to->be(4);
+                expect($stubborn->retries())->to->be(4);
             });
         });
 
@@ -83,7 +83,7 @@ describe('Stubborn', function ($test) {
                             }
                         );
                 })->to->throw('\Exception', 'this should get thrown');
-                expect($stubborn->getRetryCount())->to->be(0);
+                expect($stubborn->retries())->to->be(0);
             });
         });
     });
@@ -112,7 +112,7 @@ describe('Stubborn', function ($test) {
                 ->run(function () {
                     return 'Dog';
                 });
-            expect($stubborn->getRetryCount())->to->be(3);
+            expect($stubborn->retries())->to->be(3);
             expect($result)->to->be('Dog');
         });
 
