@@ -352,12 +352,11 @@ class Stubborn
                     // and re-run Stubborn because of
                     $suppress = $this->suppressException($e);
 
-                    // if we've exceeded retries, aren't handling this specific
-                    // exception, or want an exception to be intentionally
-                    // thrown, let it rip
-                    if (!$suppress
+                    // if we've exceeded retries, want an exception to be
+                    // intentionally thrown, or short circuit is set, let it rip
+                    if (!$this->retry_count == $this->max_retries
+                        || $suppress
                         || $this->short_circuit
-                        || $this->retry_count == $this->max_retries
                     ) {
                         
                         // store this as a current result in case the user decides
@@ -373,9 +372,7 @@ class Stubborn
                         // should be thrown out of Stubborn
                         throw $this->current_result;
                     }
-
                 }
-
             } catch (BackoffEvent $e) {
                 // don't do backoff if we're on our last try
                 if ($this->retry_count < $this->max_retries) {
