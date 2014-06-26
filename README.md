@@ -17,6 +17,8 @@ Stubborn provides all the necessary tooling you need to handle a variety of exte
 ```php
 $id = $_RESULT['user_id'];
 
+// $result will contain either the result from each attempt, or the exception
+// each attempt threw
 $result = Stubborn::build()
     // Use the Stubborn Result Handler to drive your call retries
     ->resultHandler(
@@ -24,20 +26,31 @@ $result = Stubborn::build()
             if ($result == 'Success') {
                 $stubborn->accept();
             } elseif ($result == 'Backoff_Needed') {
-                $stubborn->backoff();
+                $stubborn->staticBackoff(3);
             } elseif ($result == 'Not_Yet_Persisted') {
+                // uses Stubborns built in delay mechanism before
+                // trying again
                 $stubborn->delayRetry();
             } elseif ($result == 'Hard_Failure') {
                 $stubborn->fail();
             }
             $stubborn->retry();
         }
-    // Backoff With Our Predefined Helper, or your own implementation
-    // Performs a static 5 second backoff, leave constructor blank for an
-    // attempt based exponential backoff
-    )->backoffHandler(new DefaultBackoffHandler(5))
+    // Handle exceptions more explicitly and perform backoff using
+    // a predefined set of tools, or perform your own handling manually
+    )->exceptionHandler(function ($stubborn) {
+    
+        if (is_a($stubborn->exception(), 'Awesome_API\BackoffException')) {
+            // exponentially increasing backoff after each attempt
+            $stubborn->exponentialBackoff();
+        } else {
+            // wait three seconds before trying again
+            $stubborn->staticBackoff(3);
+        }
+        
+    })
     // Retry if defined exceptions are thrown by your function
-    ->catchExceptions(array('\Awesome_API\UnexpectedError'))
+    ->catchExceptions(array('Awesome_API\UnexpectedError'))
     ->retries(4)
     ->run(function() use ($id) {
         return Awesome_API::add_subscriber($id); 
