@@ -78,7 +78,7 @@ class StubbornEventHandler
      */
     public function exponentialBackoff()
     {
-        $duration = pow(2, $this->run_attempt) + rand(0, 1000) / 1000;
+        $duration = pow(2, $this->retry_count) + rand(0, 1000) / 1000;
         $this->backoff($duration);
     }
 
@@ -90,7 +90,7 @@ class StubbornEventHandler
      *
      ***********/
 
-    public function fail()
+    public function stop()
     {
         throw new StopEvent;
     }

@@ -118,6 +118,93 @@ describe('Stubborn', function ($test) {
 
     });
 
+    describe('StubbornEventHandler', function ($test) {
+        it('->retry()', function ($test) {
+            $stubborn = new Stubborn();
+            $result = $stubborn
+                ->retries(5)
+                ->resultHandler(function ($stubborn) {
+                    $stubborn->retry();
+                })
+                ->run(function () {
+                    return array(1,6,9);
+                });
+            expect($stubborn->getTotalTries())->to->be(6);
+            expect($result)->to->be(array(1,6,9));
+        });
+        it('->stop()', function ($test) {
+            $stubborn = new Stubborn();
+            $result = $stubborn
+                ->resultHandler(function ($stubborn) {
+                    if ($stubborn->retryCount() == 1) {
+                        $stubborn->stop();
+                    }
+                    $stubborn->retry();
+                })
+                ->retries(2)
+                ->run(function () {
+                    return 5;
+                });
+            expect($stubborn->getTotalTries())->to->be(2);
+            expect($result)->to->be(5);
+        });
+
+        it('->staticBackoff()', function ($test) {
+            $stubborn = new Stubborn();
+            $result = $stubborn
+                ->resultHandler(function ($stubborn) {
+                    if ($stubborn->retryCount() < $stubborn->maxRetries()) {
+                        $stubborn->staticBackoff(1);
+                    }
+                })
+                ->retries(2)
+                ->run(function () {
+                    return 1;
+                });
+
+            // kind of arbitrary, can't think of a more accurate way to test
+            // this at this point
+            expect($stubborn->getTotalBackoff())->to->be(2);
+            expect($stubborn->getTotalTries())->to->be(3);
+            expect($result)->to->be(1);
+        });
+
+        it('->exponentialBackoff()', function ($test) {
+            $stubborn = new Stubborn();
+            $result = $stubborn
+                ->resultHandler(function ($stubborn) {
+                    if ($stubborn->retryCount() < $stubborn->maxRetries()) {
+                        $stubborn->exponentialBackoff();
+                    }
+                })
+                ->retries(2)
+                ->run(function () {
+                    return 77;
+                });
+
+            // kind of arbitrary, can't think of a more accurate way to test
+            // this at this point
+            expect($stubborn->getTotalBackoff())->to->be->within(3, 5);
+            expect($stubborn->getTotalTries())->to->be(3);
+            expect($result)->to->be(77);
+        });
+
+        it('->delayRetry()', function ($test) {
+            $stubborn = new Stubborn();
+            $result = $stubborn
+                ->retries(1)
+                ->resultHandler(function ($stubborn) {
+                    $stubborn->delayRetry();
+                })
+                ->run(function () {
+                    return 'Kaboom';
+                });
+            expect($stubborn->getTotalBackoff())->to->be->within(1, 2);
+            expect($stubborn->getTotalTries())->to->be(2);
+            expect($result)->to->be('Kaboom');
+        });
+    });
+
     describe('->exceptionHandler()', function ($test) {
         it('should make Stubborn retry 3 times', function ($test) {
 
@@ -143,25 +230,7 @@ describe('Stubborn', function ($test) {
                 });
             expect(is_a($exception, $e_type))->to->be(true);
             expect($stubborn->getTotalTries())->to->be(4);
-            expect($stubborn->getTotalBackoff())->to->be(6);
             expect($result)->to->be('Boosh');
-        });
-    });
-    describe('->getRunTime()', function ($test) {
-        it('should return an integer time in millis', function ($test) {
-            $stubborn = new Stubborn();
-            $stubborn
-                ->resultHandler(function ($stubborn) {
-                    $stubborn->retry();
-                })
-                ->retries(2)
-                ->run(function () {
-                    sleep(1);
-                });
-
-            // kind of arbitrary, can't think of a more accurate way to test
-            // this at this point
-            expect($stubborn->getRunTime())->to->be(3);
         });
     });
 });

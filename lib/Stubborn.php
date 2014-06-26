@@ -196,11 +196,11 @@ class Stubborn
      */
     protected function handleBackoff($duration)
     {
-        $current_try = $this->retry_count + 1;
-        $max_tries = $this->max_retries + 1;
-        static::logger()->debug("Backoff Used({$duration}s): Try $current_try of $max_tries.");
+        $next_try = $this->retry_count + 1;
+        static::logger()->debug("Backoff Used({$duration}s): Retry $next_try of $this->max_retries.");
         sleep($duration);
         $this->last_backoff = $duration;
+        $this->total_backoff += $duration;
     }
 
     protected function handleException()
@@ -298,8 +298,6 @@ class Stubborn
             // start at 0 so to include the first attempt plus retries
             for ($this->retry_count = 0; $this->retry_count <= $this->max_retries; $this->retry_count++) {
 
-                \Belt\Trace::debug($this->retry_count);
-
                 $this->run_time = 0;
                 $this->last_backoff = 0;
 
@@ -388,6 +386,6 @@ class Stubborn
 
     public static function logger()
     {
-        return Trace::traceDepth(7);
+        return Trace::traceDepth(5);
     }
 }
