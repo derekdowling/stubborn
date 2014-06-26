@@ -148,10 +148,12 @@ class Stubborn
     }
 
     /**
-     * Handles setting a Backoff Strategy for Stubborn to use.
+     * Used to set a user defined strategy via an anonymous function for 
+     * dealing with exceptions thrown while executing call in Stubborn. Assumes 
+     * the handler will throw Stubborn events via the StubbornEventHandler 
+     * passed as a parameter to the function.
      *
-     * @param BackoffHandlerInterface $strategy Object that implements this 
-     * interface
+     * @param function $handler defined user function for handling exceptions
      *
      * @return itself for chaining
      */
@@ -168,7 +170,7 @@ class Stubborn
 
     /**
      *  Used to define a custom result handler. Assumes that the handler will 
-     *  throw Stubborn events via the provided ResultHandlerHelper provided 
+     *  throw Stubborn events via the provided ResultEventHandler provided 
      *  parameter.
      *
      *  @param function $handler Function that evaluates a result.
@@ -203,6 +205,9 @@ class Stubborn
         $this->total_backoff += $duration;
     }
 
+    /*
+     *  Deals with the execution of an exception handler if defined.
+     */
     protected function handleException()
     {
         if (isset($this->exception_handler)) {
@@ -234,7 +239,7 @@ class Stubborn
             );
         }
 
-        // be default we can only assume that the result was a success if we've
+        // By default we can only assume that the result was a success if we've
         // made it this far, or if the result handler hasn't thrown
         // a RetryEvent to this point
         if (!$event_handler->exception() !== null) {
@@ -260,6 +265,12 @@ class Stubborn
         return false;
     }
 
+    /*
+     *  Helper for creating StubbornEventHandlers.
+     *
+     *  Consider looking into an alternative strategy for configuring if 
+     *  parameter list continues to grow.
+     */
     private function generateEventHandler()
     {
         return new StubbornEventHandler(
