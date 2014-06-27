@@ -5,6 +5,7 @@ use Stubborn\Events\StopEvent;
 use Stubborn\Events\RetryEvent;
 use Stubborn\Events\DelayRetryEvent;
 use Stubborn\Events\BackoffEvent;
+use Stubborn\Events\ResetEvent;
 
 /**
  *  This class defines the helper object that is passed into 
@@ -68,7 +69,7 @@ class StubbornEventHandler
             throw new StubbornException('Non-function provided as invokable');
         }
 
-        $stubborn->invokable($invokable);
+        $this->stubborn_runner->invokable($invokable);
         $this->reset();
     }
 
@@ -107,6 +108,6 @@ class StubbornEventHandler
 
     public function reset()
     {
-        throw new ResetEvent();
+        throw new ResetEvent;
     }
 }

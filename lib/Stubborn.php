@@ -7,6 +7,7 @@ use Stubborn\Events\StopEvent;
 use Stubborn\Events\RetryEvent;
 use Stubborn\Events\BackoffEvent;
 use Stubborn\Events\DelayRetryEvent;
+use Stubborn\Events\ResetEvent;
 
 /**
  *  Stubborn is designed to execute functions that require a higher level of 
@@ -28,6 +29,7 @@ class Stubborn
     protected $short_circuit;
 
     // Run State Properties
+    protected $current_invokable;
     protected $retry_count;
     protected $max_retries;
     protected $current_result;
@@ -44,9 +46,17 @@ class Stubborn
     public function __construct()
     {
         // Stubborn configuration
+        $this->current_invokable = null;
         $this->catchable_exceptions = array();
         $this->short_circuit = false;
         $this->max_retries = 0;
+        $this->retry_count = 0;
+        $this->current_exception = null;
+        $this->current_result = null;
+        $this->run_time = 0;
+        $this->total_backoff = 0;
+        $this->result_handler = null;
+        $this->exception_handler = null;
     }
 
     /**
@@ -187,6 +197,25 @@ class Stubborn
     }
 
     /**
+     * Allows you to change the currently running invokable on the fly, useful 
+     * for any number of situations where the user's API arguments must make 
+     * dynamic changes.
+     *
+     * Doesn't handle resetting Stubborn's run state, use the 
+     * StubbornEventHandler 'resetAndRun' method to accomplish both of these 
+     * tasks.
+     *
+     * @param invokable $invokable the new function that should be executed
+     *
+     * @return itself for chaining
+     */
+    public function invokable($invokable)
+    {
+        $this->current_invokable = $invokable;
+        return $this;
+    }
+
+    /**
      * Used to set a user defined strategy via an anonymous function for 
      * dealing with exceptions thrown while executing call in Stubborn. Assumes 
      * the handler will throw Stubborn events via the StubbornEventHandler 
@@ -315,8 +344,6 @@ class Stubborn
 
         // start at 0 so to include the first attempt plus retries
         for ($this->retry_count = 0; $this->retry_count <= $this->max_retries; $this->retry_count++) {
-
-            \Belt\Trace::debug($this->retry_count);
 
             $this->current_result = null;
             $this->current_exceptions = null;

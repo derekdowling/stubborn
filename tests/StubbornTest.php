@@ -200,16 +200,38 @@ describe('Stubborn', function ($test) {
         });
 
         it('->reset()', function ($test) {
-            $total_retries = -1;
+            $total_tries = 0;
             $stubborn = new Stubborn();
-            $result = Stubborn::build()
+            $result = $stubborn
                 ->retries(3)
                 ->resultHandler(function ($stubborn) use (&$total_tries) {
-                    $total_tries++;
-                    \Belt\Trace::debug($stubborn->retries());
                     if ($stubborn->retries() == 2 && $stubborn->retries() == $total_tries) {
                         $stubborn->reset();
                     }
+                    $total_tries++;
+                    $stubborn->retry();
+                })
+                ->run(function () {
+                    return 3;
+                });
+            expect($total_tries)->to->be(6);
+            expect($stubborn->totalTries())->to->be(4);
+            expect($result)->to->be(3);
+        });
+
+        it('->resetAndRun()', function ($test) {
+            $total_tries = 0;
+            $stubborn = new Stubborn();
+            $result = $stubborn
+                ->retries(3)
+                ->resultHandler(function ($stubborn) use (&$total_tries) {
+                    if ($stubborn->retries() == 2 && $stubborn->retries() == $total_tries) {
+                        $stubborn->retries(2);
+                        $stubborn->resetAndRun(function () {
+                            return 2;
+                        });
+                    }
+                    $total_tries++;
                     $stubborn->retry();
                 })
                 ->run(function () {
@@ -217,7 +239,7 @@ describe('Stubborn', function ($test) {
                 });
             expect($total_tries)->to->be(5);
             expect($stubborn->totalTries())->to->be(3);
-            expect($result)->to->be(3);
+            expect($result)->to->be(2);
         });
     });
 
