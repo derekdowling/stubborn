@@ -23,7 +23,7 @@ $id = $_RESULT['user_id'];
 $result = Stubborn::build()
     // Use the Stubborn Result Handler to drive your call retries
     ->resultHandler(
-        function ($stubborn) {
+        function ($stubborn) use ($id) {
             $result = $stubborn->result();
             
             if ($result == 'Success') {
@@ -36,8 +36,15 @@ $result = Stubborn::build()
                 $stubborn->delayRetry();
             } elseif ($result == 'Hard_Failure') {
                 $stubborn->stop();
+            } elseif ($result == 'Restart_Run') {
+                $stubborn->reset();
+            } elseif ($result == 'Requires_Modification') {
+                $stubborn->resetAndRun(function () use ($id) {
+                     Awesome_API::add_subscriber($id, false);
+                });
+            } else {
+                $stubborn->retry();
             }
-            $stubborn->retry();
         }
     // Handle exceptions more explicitly and perform backoff using
     // a predefined set of tools, or perform your own handling manually
