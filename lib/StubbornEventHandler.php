@@ -1,65 +1,40 @@
 <?php namespace Stubborn;
 
+use Stubborn\Exceptions\StubbornException;
 use Stubborn\Events\StopEvent;
 use Stubborn\Events\RetryEvent;
 use Stubborn\Events\DelayRetryEvent;
 use Stubborn\Events\BackoffEvent;
+use Stubborn\Events\ResetEvent;
 
 /**
  *  This class defines the helper object that is passed into 
  *  StubbornResponseHandler functions. This allows you to fire events that help 
  *  drive Stubborn forward.
+ *
+ *  The assumption is that any functions defined within this class rely upon 
+ *  Stubborn being in a currently running state and any events they fire will 
+ *  be caught and handled appropriately.
  */
 class StubbornEventHandler
 {
-    protected $result;
-    protected $retry_count;
-    protected $max_retries;
-    protected $run_time;
-    protected $last_backoff;
-    protected $is_exception;
 
-    public function __construct($retry_count, $max_retries, $run_time, $last_backoff, $result)
+    protected $stubborn_runner;
+
+    public function __construct($stubborn)
     {
-        $is_exception = $result instanceof \Exception ? true : false;
-
-        $this->retry_count = $retry_count;
-        $this->max_retries = $max_retries;
-        $this->run_time = $run_time;
-        $this->result = $is_exception ? null : $result;
-        $this->exception = $is_exception ? $result : null;
+        $this->stubborn_runner = $stubborn;
     }
 
-    public function retryCount()
+    public function __call($function, $args)
     {
-        return $this->retry_count;
+        if (method_exists($this->stubborn_runner, $function)) {
+            return call_user_func_array(array($this->stubborn_runner, $function), $args);
+        }
+
+        throw new StubbornException("Function '$function' not defined");
     }
 
-    public function maxRetries()
-    {
-        return $this->max_retries;
-    }
-
-    public function runTime()
-    {
-        return $this->run_time;
-    }
-
-    public function exception()
-    {
-        return $this->exception;
-    }
-
-    public function result()
-    {
-        return $this->result;
-    }
-
-    public function lastBackoff()
-    {
-        return $this->last_backoff;
-    }
-    
     /*
      *  Allows the user to perform a static backoff
      *  that remains the same length for every attempt.
@@ -72,14 +47,30 @@ class StubbornEventHandler
     }
 
     /**
-     * Allows the user to perform an exponential backoff between
-     * attempts in which the backoff duration grows exponentially
-     * after each call.
+     *  Allows the user to perform an exponential backoff between
+     *  attempts in which the backoff duration grows exponentially
+     *  after each call.
      */
     public function exponentialBackoff()
     {
-        $duration = pow(2, $this->retry_count) + rand(0, 1000) / 1000;
+        $duration = pow(2, $this->stubborn_runner->retries()) + rand(0, 1000) / 1000;
         $this->backoff($duration);
+    }
+
+    /**
+     *  Allows you to reset Stubborn mid-run and run again with the newly 
+     *  provided function to execute.
+     *
+     *  @param invokable function to run against the Stubborn configuration
+     */
+    public function resetAndRun($invokable)
+    {
+        if (!is_callable($invokable)) {
+            throw new StubbornException('Non-function provided as invokable');
+        }
+
+        $this->stubborn_runner->invokable($invokable);
+        $this->reset();
     }
 
     /***********
@@ -113,5 +104,10 @@ class StubbornEventHandler
     private function backoff($duration)
     {
         throw new BackoffEvent($duration);
+    }
+
+    public function reset()
+    {
+        throw new ResetEvent;
     }
 }
