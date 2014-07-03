@@ -1,66 +1,5 @@
 [
     {
-        "name": "symfony/console",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "target-dir": "Symfony/Component/Console",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/Console.git",
-            "reference": "f41913cde27de7073e78d9a41c1299c0315dfe64"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Console/zipball/f41913cde27de7073e78d9a41c1299c0315dfe64",
-            "reference": "f41913cde27de7073e78d9a41c1299c0315dfe64",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "psr/log": "~1.0",
-            "symfony/event-dispatcher": "~2.1",
-            "symfony/process": "~2.1"
-        },
-        "suggest": {
-            "psr/log": "For using the console logger",
-            "symfony/event-dispatcher": "",
-            "symfony/process": ""
-        },
-        "time": "2014-06-11 06:54:52",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.6-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\Component\\Console\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com",
-                "homepage": "http://fabien.potencier.org",
-                "role": "Lead Developer"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Console Component",
-        "homepage": "http://symfony.com"
-    },
-    {
         "name": "jacobstr/dumpling",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -100,30 +39,25 @@
     },
     {
         "name": "evenement/evenement",
-        "version": "1.0.x-dev",
-        "version_normalized": "1.0.9999999.9999999-dev",
+        "version": "v1.0.0",
+        "version_normalized": "1.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/igorw/evenement.git",
-            "reference": "8b0918f8374327dfed4408fe467980ab41d556dd"
+            "reference": "fa966683e7df3e5dd5929d984a44abfbd6bafe8d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/igorw/evenement/zipball/8b0918f8374327dfed4408fe467980ab41d556dd",
-            "reference": "8b0918f8374327dfed4408fe467980ab41d556dd",
+            "url": "https://api.github.com/repos/igorw/evenement/zipball/fa966683e7df3e5dd5929d984a44abfbd6bafe8d",
+            "reference": "fa966683e7df3e5dd5929d984a44abfbd6bafe8d",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2012-12-29 17:04:52",
+        "time": "2012-05-30 15:01:08",
         "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.0-dev"
-            }
-        },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-0": {
                 "Evenement": "src"
@@ -185,52 +119,65 @@
         ]
     },
     {
-        "name": "jacobstr/matura",
+        "name": "symfony/console",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
+        "target-dir": "Symfony/Component/Console",
         "source": {
             "type": "git",
-            "url": "https://github.com/jacobstr/matura.git",
-            "reference": "33a6d9a792f8395e26134de02b9cff546926a220"
+            "url": "https://github.com/symfony/Console.git",
+            "reference": "9a491e7983209bf320d40917291c03e856eee947"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/jacobstr/matura/zipball/33a6d9a792f8395e26134de02b9cff546926a220",
-            "reference": "33a6d9a792f8395e26134de02b9cff546926a220",
+            "url": "https://api.github.com/repos/symfony/Console/zipball/9a491e7983209bf320d40917291c03e856eee947",
+            "reference": "9a491e7983209bf320d40917291c03e856eee947",
             "shasum": ""
         },
         "require": {
-            "jacobstr/dumpling": "dev-master",
-            "jacobstr/esperance": "dev-master",
-            "mockery/mockery": "dev-master",
-            "symfony/console": "dev-master"
+            "php": ">=5.3.3"
         },
-        "time": "2014-06-09 16:54:07",
-        "bin": [
-            "bin/mat"
-        ],
+        "require-dev": {
+            "psr/log": "~1.0",
+            "symfony/event-dispatcher": "~2.1",
+            "symfony/process": "~2.1"
+        },
+        "suggest": {
+            "psr/log": "For using the console logger",
+            "symfony/event-dispatcher": "",
+            "symfony/process": ""
+        },
+        "time": "2014-06-20 17:41:51",
         "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "Matura\\": "lib",
-                "Matura\\Test\\": "test"
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.6-dev"
             }
         },
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\Component\\Console\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],
         "authors": [
             {
-                "name": "jacobstr",
-                "email": "jacobstr@gmail.com"
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com",
+                "homepage": "http://fabien.potencier.org",
+                "role": "Lead Developer"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
             }
         ],
-        "description": "A mocha/rspec inspired testing framework for php.",
-        "support": {
-            "source": "https://github.com/jacobstr/matura/tree/master",
-            "issues": "https://github.com/jacobstr/matura/issues"
-        }
+        "description": "Symfony Console Component",
+        "homepage": "http://symfony.com"
     },
     {
         "name": "mockery/mockery",
@@ -239,12 +186,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/padraic/mockery.git",
-            "reference": "76212f1e56646f972618fa359bee68b9c2feb57a"
+            "reference": "33b01619721a925db8b61e8623fa8acf2c2be496"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/padraic/mockery/zipball/76212f1e56646f972618fa359bee68b9c2feb57a",
-            "reference": "76212f1e56646f972618fa359bee68b9c2feb57a",
+            "url": "https://api.github.com/repos/padraic/mockery/zipball/33b01619721a925db8b61e8623fa8acf2c2be496",
+            "reference": "33b01619721a925db8b61e8623fa8acf2c2be496",
             "shasum": ""
         },
         "require": {
@@ -256,7 +203,7 @@
             "phpunit/phpunit": "~4.0",
             "satooshi/php-coveralls": "~0.7@dev"
         },
-        "time": "2014-06-17 10:46:23",
+        "time": "2014-06-27 12:23:08",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -301,9 +248,54 @@
         ]
     },
     {
-        "name": "esperance/esperance",
+        "name": "jacobstr/matura",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jacobstr/matura.git",
+            "reference": "ea8e8ac64f69233c8805e85337cf3d713e242f65"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jacobstr/matura/zipball/ea8e8ac64f69233c8805e85337cf3d713e242f65",
+            "reference": "ea8e8ac64f69233c8805e85337cf3d713e242f65",
+            "shasum": ""
+        },
+        "require": {
+            "jacobstr/dumpling": "dev-master",
+            "jacobstr/esperance": "dev-master",
+            "mockery/mockery": "dev-master",
+            "symfony/console": "dev-master"
+        },
+        "time": "2014-07-03 20:13:46",
+        "bin": [
+            "bin/mat"
+        ],
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Matura\\": "lib",
+                "Matura\\Test\\": "test"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "jacobstr",
+                "email": "jacobstr@gmail.com"
+            }
+        ],
+        "description": "A mocha/rspec inspired testing framework for php."
+    },
+    {
+        "name": "esperance/esperance",
+        "version": "v0.1.0",
+        "version_normalized": "0.1.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/esperance/esperance.git",
@@ -321,7 +313,7 @@
         },
         "time": "2012-07-06 18:12:36",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-0": {
                 "Esperance": "src"
@@ -386,37 +378,29 @@
     },
     {
         "name": "phpunit/phpunit-mock-objects",
-        "version": "1.2.x-dev",
-        "version_normalized": "1.2.9999999.9999999-dev",
+        "version": "1.2.3",
+        "version_normalized": "1.2.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-            "reference": "c39c4511c3b007539eb170c32cbc2af49a07351a"
+            "reference": "5794e3c5c5ba0fb037b11d8151add2a07fa82875"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/c39c4511c3b007539eb170c32cbc2af49a07351a",
-            "reference": "c39c4511c3b007539eb170c32cbc2af49a07351a",
+            "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/5794e3c5c5ba0fb037b11d8151add2a07fa82875",
+            "reference": "5794e3c5c5ba0fb037b11d8151add2a07fa82875",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3",
             "phpunit/php-text-template": ">=1.1.1@stable"
         },
-        "require-dev": {
-            "phpunit/phpunit": "3.7.*@dev"
-        },
         "suggest": {
             "ext-soap": "*"
         },
-        "time": "2014-02-16 12:43:56",
+        "time": "2013-01-13 10:24:48",
         "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.2.x-dev"
-            }
-        },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "classmap": [
                 "PHPUnit/"
@@ -491,31 +475,31 @@
     },
     {
         "name": "phpunit/php-token-stream",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
+        "version": "1.2.2",
+        "version_normalized": "1.2.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-            "reference": "955c24b708f8bfd6a05f303217a8dac3a443d531"
+            "reference": "ad4e1e23ae01b483c16f600ff1bebec184588e32"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/955c24b708f8bfd6a05f303217a8dac3a443d531",
-            "reference": "955c24b708f8bfd6a05f303217a8dac3a443d531",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/ad4e1e23ae01b483c16f600ff1bebec184588e32",
+            "reference": "ad4e1e23ae01b483c16f600ff1bebec184588e32",
             "shasum": ""
         },
         "require": {
             "ext-tokenizer": "*",
             "php": ">=5.3.3"
         },
-        "time": "2014-05-12 05:34:42",
+        "time": "2014-03-03 05:10:30",
         "type": "library",
         "extra": {
             "branch-alias": {
                 "dev-master": "1.2-dev"
             }
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "classmap": [
                 "PHP/"
@@ -590,17 +574,17 @@
     },
     {
         "name": "phpunit/php-code-coverage",
-        "version": "1.2.x-dev",
-        "version_normalized": "1.2.9999999.9999999-dev",
+        "version": "1.2.17",
+        "version_normalized": "1.2.17.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-            "reference": "61fed79803b6c75d461b909dfac05bbef5cd4f46"
+            "reference": "6ef2bf3a1c47eca07ea95f0d8a902a6340390b34"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/61fed79803b6c75d461b909dfac05bbef5cd4f46",
-            "reference": "61fed79803b6c75d461b909dfac05bbef5cd4f46",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/6ef2bf3a1c47eca07ea95f0d8a902a6340390b34",
+            "reference": "6ef2bf3a1c47eca07ea95f0d8a902a6340390b34",
             "shasum": ""
         },
         "require": {
@@ -616,14 +600,14 @@
             "ext-dom": "*",
             "ext-xdebug": ">=2.0.5"
         },
-        "time": "2014-05-19 01:58:57",
+        "time": "2014-03-28 10:53:45",
         "type": "library",
         "extra": {
             "branch-alias": {
                 "dev-master": "1.2.x-dev"
             }
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "classmap": [
                 "PHP/"
@@ -653,31 +637,31 @@
     },
     {
         "name": "symfony/yaml",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
+        "version": "v2.5.0",
+        "version_normalized": "2.5.0.0",
         "target-dir": "Symfony/Component/Yaml",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/Yaml.git",
-            "reference": "b01d366060f33e18fd98b0008c41a01b0d25c95c"
+            "reference": "b4b09c68ec2f2727574544ef0173684281a5033c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Yaml/zipball/b01d366060f33e18fd98b0008c41a01b0d25c95c",
-            "reference": "b01d366060f33e18fd98b0008c41a01b0d25c95c",
+            "url": "https://api.github.com/repos/symfony/Yaml/zipball/b4b09c68ec2f2727574544ef0173684281a5033c",
+            "reference": "b4b09c68ec2f2727574544ef0173684281a5033c",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2014-06-04 06:43:44",
+        "time": "2014-05-16 14:25:18",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "2.6-dev"
+                "dev-master": "2.5-dev"
             }
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-0": {
                 "Symfony\\Component\\Yaml\\": ""
@@ -704,8 +688,8 @@
     },
     {
         "name": "phpunit/phpunit",
-        "version": "3.7.x-dev",
-        "version_normalized": "3.7.9999999.9999999-dev",
+        "version": "3.7.37",
+        "version_normalized": "3.7.37.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/phpunit.git",
@@ -748,7 +732,7 @@
                 "dev-master": "3.7.x-dev"
             }
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "classmap": [
                 "PHPUnit/"
@@ -784,19 +768,19 @@
         "source": {
             "type": "git",
             "url": "https://github.com/mover-io/phpusable-phpunit.git",
-            "reference": "ca92418fd0957036a37d39333663a7a615bc1f12"
+            "reference": "f1cac9317f93a84f7d529e0c640e46372fc3c0a7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/mover-io/phpusable-phpunit/zipball/ca92418fd0957036a37d39333663a7a615bc1f12",
-            "reference": "ca92418fd0957036a37d39333663a7a615bc1f12",
+            "url": "https://api.github.com/repos/mover-io/phpusable-phpunit/zipball/f1cac9317f93a84f7d529e0c640e46372fc3c0a7",
+            "reference": "f1cac9317f93a84f7d529e0c640e46372fc3c0a7",
             "shasum": ""
         },
         "require": {
             "esperance/esperance": ">=0.1",
             "phpunit/phpunit": "3.7.*"
         },
-        "time": "2013-12-31 01:10:23",
+        "time": "2014-07-02 19:08:34",
         "type": "library",
         "installation-source": "source",
         "autoload": {
