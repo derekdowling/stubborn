@@ -2,25 +2,21 @@
     "name": "derekdowling/stubborn",
     "description": "Configurable call handler that is persistent against failures.",
     "license": "Apache-2.0",
-    "minimum-stability": "dev",
     "authors": [
         {
             "name": "derekdowling",
             "email": "me@derekdowling.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/jacobstr/matura.git"
-        }
-    ],
     "require": {
+        "jacobstr/matura": "dev-master",
         "mover-io/belt": "dev-master"
     },
     "autoload": {
         "psr-4": {
             "Stubborn\\": "lib/"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
