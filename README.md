@@ -1,5 +1,7 @@
 ## Stubborn
 
+![build status](https://travis-ci.org/derekdowling/stubborn.svg?branch=master)
+
 ##### Configurable call handler that is persistent against failures.
 ###### Built, tested, and relied upon at [Mover.io](https://mover.io).
 
