@@ -305,7 +305,7 @@ class Stubborn
         // By default we can only assume that the result was a success if we've
         // made it this far, or if the result handler hasn't thrown
         // a RetryEvent to this point
-        if ($this->exception() !== null) {
+        if ($this->exception() == null) {
             throw new StopEvent;
         }
     }
