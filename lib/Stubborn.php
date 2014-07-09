@@ -44,7 +44,7 @@ class Stubborn
      *  play capabilities. Any custom setting should happen using the setters 
      *  defined below.
      */
-    public function __construct()
+    public function __construct($event_handler_class = 'Stubborn\EventHandler')
     {
         // Stubborn configuration
         $this->current_invokable = null;
@@ -58,7 +58,7 @@ class Stubborn
         $this->total_backoff = 0;
         $this->result_handler = null;
         $this->exception_handler = null;
-        $this->event_handler_class = 'Stubborn\EventHandler';
+        $this->event_handler_class = $event_handler_class;
     }
 
     /**
