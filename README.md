@@ -26,21 +26,26 @@ $result = Stubborn::build()
     // Use the Stubborn Result Handler to drive your call retries
     ->resultHandler(
         function ($stubborn) use ($id) {
+            // fetch the latest attempt result
             $result = $stubborn->result();
             
             if ($result == 'Success') {
+                // use the Event Handler to drive Stubborn
                 $stubborn->accept();
             } elseif ($result == 'Backoff_Needed') {
+                // Let Stubborn backoff for 3 seconds, then retry
                 $stubborn->staticBackoff(3);
             } elseif ($result == 'Not_Yet_Persisted') {
-                // uses Stubborns built in delay mechanism before
-                // trying again
+                // Let Stubborn Delay, Then Retry
                 $stubborn->delayRetry();
             } elseif ($result == 'Hard_Failure') {
+                // Sometimes, giving up is the best option
                 $stubborn->stop();
             } elseif ($result == 'Restart_Run') {
+                // Allows you to restart the run from scratch
                 $stubborn->reset();
             } elseif ($result == 'Requires_Modification') {
+                // Start over, but with a slightly modified API Call
                 $stubborn->resetAndRun(function () use ($id) {
                      Awesome_API::add_subscriber($id, false);
                 });
@@ -63,6 +68,7 @@ $result = Stubborn::build()
     })
     // Retry if defined exceptions are thrown by your function
     ->catchExceptions(array('Awesome_API\UnexpectedError'))
+    // Will retry up to four times after the first attempt
     ->retries(4)
     ->run(function() use ($id) {
         return Awesome_API::add_subscriber($id); 
