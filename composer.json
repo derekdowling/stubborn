@@ -1,7 +1,7 @@
 {
     "name": "derekdowling/stubborn",
     "description": "Configurable call handler that is persistent against failures.",
-    "license": "Apache-2.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "derekdowling",
@@ -9,14 +9,13 @@
         }
     ],
     "require": {
-        "jacobstr/matura": "dev-master",
-        "mover-io/belt": "dev-master"
+        "jacobstr/matura": "~0.2",
+        "mover-io/belt": "~1.0"
     },
     "autoload": {
         "psr-4": {
             "Stubborn\\": "lib/"
         }
     },
-    "minimum-stability": "dev",
     "prefer-stable": true
 }
