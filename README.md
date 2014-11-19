@@ -26,7 +26,8 @@ $result = Stubborn::build()
     // Use the Stubborn Result Handler to drive your call retries
     ->resultHandler(
         function ($stubborn) use ($id) {
-            // fetch the latest attempt result returned from the run call
+            // fetch the latest attempt result returned from
+            // whatever you called in the the run function
             $result = $stubborn->result();
             
             if ($result == 'Success_Result') {
