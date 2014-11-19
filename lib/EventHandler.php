@@ -16,7 +16,7 @@ use Stubborn\Events\ResetEvent;
  *  Stubborn being in a currently running state and any events they fire will 
  *  be caught and handled appropriately.
  */
-class StubbornEventHandler
+class EventHandler
 {
 
     protected $stubborn_runner;

@@ -20,7 +20,8 @@ use Stubborn\Events\ResetEvent;
  */
 class Stubborn
 {
-    // User Defined Handler Functions
+    // User Defined Handlers
+    protected $event_handler_class;
     protected $result_handler;
     protected $exception_handler;
     
@@ -43,7 +44,7 @@ class Stubborn
      *  play capabilities. Any custom setting should happen using the setters 
      *  defined below.
      */
-    public function __construct()
+    public function __construct($event_handler_class = 'Stubborn\EventHandler')
     {
         // Stubborn configuration
         $this->current_invokable = null;
@@ -57,6 +58,7 @@ class Stubborn
         $this->total_backoff = 0;
         $this->result_handler = null;
         $this->exception_handler = null;
+        $this->event_handler_class = $event_handler_class;
     }
 
     /**
@@ -281,7 +283,7 @@ class Stubborn
         if (isset($this->exception_handler)) {
             call_user_func(
                 $this->exception_handler,
-                new StubbornEventHandler($this)
+                new $this->event_handler_class($this)
             );
         }
     }
@@ -298,7 +300,7 @@ class Stubborn
         if (isset($this->result_handler)) {
             call_user_func(
                 $this->result_handler,
-                new StubbornEventHandler($this)
+                new $this->event_handler_class($this)
             );
         }
 
