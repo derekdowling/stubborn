@@ -1,9 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "a481ff392ed62da8f1c8aefb4ece8d2f",
+    "hash": "6c51ddae5ff554a37d7868083a8ae254",
     "packages": [
         {
             "name": "esperance/esperance",
@@ -83,7 +84,7 @@
         },
         {
             "name": "jacobstr/dumpling",
-            "version": "dev-master",
+            "version": "v0.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jacobstr/dumpling.git",
@@ -119,21 +120,21 @@
         },
         {
             "name": "jacobstr/esperance",
-            "version": "dev-master",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jacobstr/esperance.git",
-                "reference": "a8b60ca89db826e64e32d1db7eb6a1997dd385a2"
+                "reference": "c60bba80423badebb0902a1998d8fce7bc1dc500"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jacobstr/esperance/zipball/a8b60ca89db826e64e32d1db7eb6a1997dd385a2",
-                "reference": "a8b60ca89db826e64e32d1db7eb6a1997dd385a2",
+                "url": "https://api.github.com/repos/jacobstr/esperance/zipball/c60bba80423badebb0902a1998d8fce7bc1dc500",
+                "reference": "c60bba80423badebb0902a1998d8fce7bc1dc500",
                 "shasum": ""
             },
             "require": {
-                "evenement/evenement": "1.*",
-                "jacobstr/dumpling": "dev-master",
+                "evenement/evenement": "~1.0",
+                "jacobstr/dumpling": "~0.0.3",
                 "php": ">=5.3.2"
             },
             "type": "library",
@@ -152,27 +153,29 @@
                 "TDD",
                 "assertion"
             ],
-            "time": "2014-05-25 19:18:59"
+            "time": "2014-07-25 00:16:29"
         },
         {
             "name": "jacobstr/matura",
-            "version": "dev-master",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jacobstr/matura.git",
-                "reference": "ea8e8ac64f69233c8805e85337cf3d713e242f65"
+                "reference": "8eaa29d84aa58410f09db06d4afba6981c925663"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jacobstr/matura/zipball/ea8e8ac64f69233c8805e85337cf3d713e242f65",
-                "reference": "ea8e8ac64f69233c8805e85337cf3d713e242f65",
+                "url": "https://api.github.com/repos/jacobstr/matura/zipball/8eaa29d84aa58410f09db06d4afba6981c925663",
+                "reference": "8eaa29d84aa58410f09db06d4afba6981c925663",
                 "shasum": ""
             },
             "require": {
-                "jacobstr/dumpling": "dev-master",
-                "jacobstr/esperance": "dev-master",
+                "jacobstr/esperance": "~0.1",
+                "symfony/console": "~2"
+            },
+            "require-dev": {
                 "mockery/mockery": "dev-master",
-                "symfony/console": "dev-master"
+                "mover-io/belt": "dev-master"
             },
             "bin": [
                 "bin/mat"
@@ -181,7 +184,7 @@
             "autoload": {
                 "psr-4": {
                     "Matura\\": "lib",
-                    "Matura\\Test\\": "test"
+                    "Matura\\Test\\": "support/lib"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -195,89 +198,23 @@
                 }
             ],
             "description": "A mocha/rspec inspired testing framework for php.",
-            "time": "2014-07-03 20:13:46"
-        },
-        {
-            "name": "mockery/mockery",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/padraic/mockery.git",
-                "reference": "33b01619721a925db8b61e8623fa8acf2c2be496"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/33b01619721a925db8b61e8623fa8acf2c2be496",
-                "reference": "33b01619721a925db8b61e8623fa8acf2c2be496",
-                "shasum": ""
-            },
-            "require": {
-                "lib-pcre": ">=7.0",
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "hamcrest/hamcrest-php": "~1.1",
-                "phpunit/phpunit": "~4.0",
-                "satooshi/php-coveralls": "~0.7@dev"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.9.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Mockery": "library/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Pádraic Brady",
-                    "email": "padraic.brady@gmail.com",
-                    "homepage": "http://blog.astrumfutura.com"
-                },
-                {
-                    "name": "Dave Marshall",
-                    "email": "dave.marshall@atstsolutions.co.uk",
-                    "homepage": "http://davedevelopment.co.uk"
-                }
-            ],
-            "description": "Mockery is a simple yet flexible PHP mock object framework for use in unit testing with PHPUnit, PHPSpec or any other testing framework. Its core goal is to offer a test double framework with a succint API capable of clearly defining all possible object operations and interactions using a human readable Domain Specific Language (DSL). Designed as a drop in alternative to PHPUnit's phpunit-mock-objects library, Mockery is easy to integrate with PHPUnit and can operate alongside phpunit-mock-objects without the World ending.",
-            "homepage": "http://github.com/padraic/mockery",
-            "keywords": [
-                "BDD",
-                "TDD",
-                "library",
-                "mock",
-                "mock objects",
-                "mockery",
-                "stub",
-                "test",
-                "test double",
-                "testing"
-            ],
-            "time": "2014-06-27 12:23:08"
+            "time": "2014-11-07 09:24:46"
         },
         {
             "name": "mover-io/belt",
-            "version": "dev-master",
+            "version": "1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mover-io/belt.git",
-                "reference": "71031d8c8480d940913cef0ac338d2fd43fbd5f0"
+                "reference": "6706db677dcbf439cfe36687a0ca71b0fae20f7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mover-io/belt/zipball/71031d8c8480d940913cef0ac338d2fd43fbd5f0",
-                "reference": "71031d8c8480d940913cef0ac338d2fd43fbd5f0",
+                "url": "https://api.github.com/repos/mover-io/belt/zipball/6706db677dcbf439cfe36687a0ca71b0fae20f7b",
+                "reference": "6706db677dcbf439cfe36687a0ca71b0fae20f7b",
                 "shasum": ""
             },
-            "require": {
+            "require-dev": {
                 "mover-io/phpusable-phpunit": "dev-master"
             },
             "type": "library",
@@ -296,42 +233,8 @@
                     "homepage": "https://github.com/jacobstr"
                 }
             ],
-            "time": "2014-06-19 19:24:20"
-        },
-        {
-            "name": "mover-io/phpusable-phpunit",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mover-io/phpusable-phpunit.git",
-                "reference": "f1cac9317f93a84f7d529e0c640e46372fc3c0a7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mover-io/phpusable-phpunit/zipball/f1cac9317f93a84f7d529e0c640e46372fc3c0a7",
-                "reference": "f1cac9317f93a84f7d529e0c640e46372fc3c0a7",
-                "shasum": ""
-            },
-            "require": {
-                "esperance/esperance": ">=0.1",
-                "phpunit/phpunit": "3.7.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PHPUsable\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "keywords": [
-                "BDD",
-                "TDD",
-                "assertion"
-            ],
-            "time": "2014-07-02 19:08:34"
+            "description": "A utility belt",
+            "time": "2014-09-19 19:15:26"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -701,17 +604,17 @@
         },
         {
             "name": "symfony/console",
-            "version": "dev-master",
+            "version": "v2.5.6",
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "9a491e7983209bf320d40917291c03e856eee947"
+                "reference": "6f177fca24200a5b97aef5ce7a5c98124a0f0db0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/9a491e7983209bf320d40917291c03e856eee947",
-                "reference": "9a491e7983209bf320d40917291c03e856eee947",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/6f177fca24200a5b97aef5ce7a5c98124a0f0db0",
+                "reference": "6f177fca24200a5b97aef5ce7a5c98124a0f0db0",
                 "shasum": ""
             },
             "require": {
@@ -719,18 +622,16 @@
             },
             "require-dev": {
                 "psr/log": "~1.0",
-                "symfony/event-dispatcher": "~2.1",
-                "symfony/process": "~2.1"
+                "symfony/event-dispatcher": "~2.1"
             },
             "suggest": {
                 "psr/log": "For using the console logger",
-                "symfony/event-dispatcher": "",
-                "symfony/process": ""
+                "symfony/event-dispatcher": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -744,19 +645,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-06-20 17:41:51"
+            "time": "2014-10-05 13:57:04"
         },
         {
             "name": "symfony/yaml",
@@ -808,21 +707,11 @@
             "time": "2014-05-16 14:25:18"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
-    "minimum-stability": "dev",
-    "stability-flags": {
-        "jacobstr/matura": 20,
-        "mover-io/belt": 20
-    },
-    "platform": [
-
-    ],
-    "platform-dev": [
-
-    ]
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": true,
+    "platform": [],
+    "platform-dev": []
 }

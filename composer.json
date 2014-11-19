@@ -10,7 +10,7 @@
     ],
     "require": {
         "jacobstr/matura": "~0.2",
-        "mover-io/belt": "1.0"
+        "mover-io/belt": "~1.0"
     },
     "autoload": {
         "psr-4": {
