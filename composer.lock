@@ -4,8 +4,46 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6c51ddae5ff554a37d7868083a8ae254",
+    "hash": "9f09847f494bba84ba5f2162af14cf47",
     "packages": [
+        {
+            "name": "mover-io/belt",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mover-io/belt.git",
+                "reference": "6706db677dcbf439cfe36687a0ca71b0fae20f7b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mover-io/belt/zipball/6706db677dcbf439cfe36687a0ca71b0fae20f7b",
+                "reference": "6706db677dcbf439cfe36687a0ca71b0fae20f7b",
+                "shasum": ""
+            },
+            "require-dev": {
+                "mover-io/phpusable-phpunit": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Belt\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jacob Straszynski",
+                    "homepage": "https://github.com/jacobstr"
+                }
+            ],
+            "description": "A utility belt",
+            "time": "2014-09-19 19:15:26"
+        }
+    ],
+    "packages-dev": [
         {
             "name": "esperance/esperance",
             "version": "v0.1.0",
@@ -199,42 +237,6 @@
             ],
             "description": "A mocha/rspec inspired testing framework for php.",
             "time": "2014-11-07 09:24:46"
-        },
-        {
-            "name": "mover-io/belt",
-            "version": "1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mover-io/belt.git",
-                "reference": "6706db677dcbf439cfe36687a0ca71b0fae20f7b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mover-io/belt/zipball/6706db677dcbf439cfe36687a0ca71b0fae20f7b",
-                "reference": "6706db677dcbf439cfe36687a0ca71b0fae20f7b",
-                "shasum": ""
-            },
-            "require-dev": {
-                "mover-io/phpusable-phpunit": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Belt\\": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jacob Straszynski",
-                    "homepage": "https://github.com/jacobstr"
-                }
-            ],
-            "description": "A utility belt",
-            "time": "2014-09-19 19:15:26"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -707,7 +709,6 @@
             "time": "2014-05-16 14:25:18"
         }
     ],
-    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],

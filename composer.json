@@ -9,13 +9,17 @@
         }
     ],
     "require": {
-        "jacobstr/matura": "~0.2",
         "mover-io/belt": "~1.0"
+    },
+    "require-dev": {
+        "jacobstr/matura": "~0.2"
     },
     "autoload": {
         "psr-4": {
             "Stubborn\\": "lib/"
         }
     },
-    "prefer-stable": true
+    "scripts": {
+        "test": "vendor/bin/mat test tests/StubbornTest.php"
+    }
 }
